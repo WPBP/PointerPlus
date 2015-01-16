@@ -1,11 +1,11 @@
 <?php
+
 /**
  * Class PointerPlus based on QL_Pointer to facilitate creation of WP Pointers
  * @author QueryLoop
  */
-
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
 	exit;
 }
 
@@ -16,12 +16,11 @@ class PointerPlus {
 	 * @var string
 	 */
 	var $prefix = 'pointerplus';
-
 	var $pointers = array();
 
 	function __construct( $args = array() ) {
-		if ( isset( $args['prefix'] ) ) {
-			$this->prefix = $args['prefix'];
+		if ( isset( $args[ 'prefix' ] ) ) {
+			$this->prefix = $args[ 'prefix' ];
 		}
 		add_action( 'admin_init', array( $this, 'maybe_add_pointers' ) );
 	}
@@ -33,9 +32,9 @@ class PointerPlus {
 	 */
 	function initial_pointers() {
 		return apply_filters( 'pointerplus_list', array(
-			// Pointers are added through the 'initial_pointerplus' filter so you can
-			// have the localization set to your own text domain.
-		), $this->prefix );
+				// Pointers are added through the 'initial_pointerplus' filter so you can
+				// have the localization set to your own text domain.
+				), $this->prefix );
 	}
 
 	/**
@@ -57,7 +56,6 @@ class PointerPlus {
 			$this->pointers = $diff;
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_assets' ) );
 		}
-
 	}
 
 	/**
@@ -75,4 +73,5 @@ class PointerPlus {
 
 		wp_localize_script( $this->prefix, 'pointerplus', apply_filters( 'pointerplus_js_vars', $this->pointers ) );
 	}
+
 }

@@ -5,7 +5,7 @@
 	$(document).ready(function () {
 		$.each(pointerplus, function(key, pointer) {
 			$(pointer.selector).pointer({
-				content: pointer.title + pointer.text,
+				content: '<h3>' + pointer.title + '</h3><p>' + pointer.text + '</p>',
 				position: {
 					edge: pointer.edge,
 					align: pointer.align

@@ -1,6 +1,0 @@
-/* QueryLoop Admin Pointer - http://queryloop.com */
-
-/* Keep pointer fixed when menu is sticky */
-body:not(.sticky-menu) .ql-pointer {
-	position: fixed !important;
-}
