@@ -50,7 +50,7 @@ function custom_initial_pointers( $pointers, $prefix ) {
 	  'align' => 'middle',
 	  'edge' => 'left',
 	  'post_type' => array(),
-	  'pages' => 'all'
+	  'pages' => 'array(),
 	  );
 	 */
 
@@ -74,10 +74,16 @@ function custom_initial_pointers( $pointers, $prefix ) {
 			'text' => __( 'A pointer for pages.', 'your-domain' ),
 			'post_type' => array( 'page' )
 		),
+		$prefix . '_users' => array(
+			'selector' => '#menu-users',
+			'title' => __( 'PointerPlus Users', 'your-domain' ),
+			'text' => __( 'A pointer for users.', 'your-domain' ),
+			'pages' => array( 'users.php' )
+		),
 		$prefix . '_contextual_tab' => array(
 			'selector' => '#show-settings-link',
 			'title' => __( 'PointerPlus Help', 'your-domain' ),
-			'text' => __( 'A pointer for help tab. Go to Posts and Pages for other pointers.', 'your-domain' ),
+			'text' => __( 'A pointer for help tab.<br>Go to Posts, Pages or Users for other pointers.', 'your-domain' ),
 			'edge' => 'top',
 			'align' => 'right',
 		)
