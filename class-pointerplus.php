@@ -22,7 +22,7 @@ class PointerPlus {
 		if ( isset( $args[ 'prefix' ] ) ) {
 			$this->prefix = $args[ 'prefix' ];
 		}
-		add_action( 'admin_init', array( $this, 'maybe_add_pointers' ) );
+		add_action( 'current_screen', array( $this, 'maybe_add_pointers' ) );
 	}
 
 	/**
@@ -33,18 +33,52 @@ class PointerPlus {
 	function initial_pointers() {
 		$defaults = array(
 			'class' => 'pointerplus',
-			'width' => 300,
+			'width' => 300, //only fixed value
 			'align' => 'middle',
 			'edge' => 'left',
+			'post_type' => array(),
+			'pages' => 'all'
 		);
+		$screen = get_current_screen();
+		$current_post_type = isset( $screen->post_type ) ? $screen->post_type : false;
+		$search_pt = false;
+
 		$pointers = apply_filters( 'pointerplus_list', array(
-				// Pointers are added through the 'initial_pointerplus' filter so you can
-				// have the localization set to your own text domain.
+				// Pointers are added through the 'initial_pointerplus' filter
 				), $this->prefix );
+
 		foreach ( $pointers as $key => $pointer ) {
-			$pointers[$key] = wp_parse_args($pointer, $defaults);
+			$pointers[ $key ] = wp_parse_args( $pointer, $defaults );
+			$search_pt = false;
+			
+			$pointers[ $key ][ 'post_type' ] = array_filter($pointers[ $key ][ 'post_type' ]);
+			if ( !empty( $pointers[ $key ][ 'post_type' ] ) ) {
+				if ( !empty( $current_post_type ) ) {
+					if ( is_array( $pointers[ $key ][ 'post_type' ] ) ) {
+						// Search the post_type
+						foreach ( $pointers[ $key ][ 'post_type' ] as $value ) {
+							if ( $value === $current_post_type ) {
+								$search_pt = true;
+							}
+						}
+						if ( $search_pt === false ) {
+							unset( $pointers[ $key ] );
+						}
+					} else {
+						new WP_Error( 'broke', __( 'PointerPlus Error: post_type is not an array!' ) );
+					}
+				//If not in CPT view remove all the pointers with post_type
+				} else {
+					unset( $pointers[ $key ] );
+				}
+			}
+
+			if ( $pointers[ $key ][ 'pages' ] ) {
+				
+			}
 		}
 		
+			print_r($pointers[ $key ]);
 		return $pointers;
 	}
 

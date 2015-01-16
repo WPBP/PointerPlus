@@ -42,6 +42,18 @@ add_action( 'plugins_loaded', 'pointerplus_load_localization' );
  * @return mixed
  */
 function custom_initial_pointers( $pointers, $prefix ) {
+	/*
+	 * Default parameters:
+	  $defaults = array(
+	  'class' => 'pointerplus',
+	  'width' => 300, //fixed value
+	  'align' => 'middle',
+	  'edge' => 'left',
+	  'post_type' => array(),
+	  'pages' => 'all'
+	  );
+	 */
+
 	return array_merge( $pointers, array(
 		$prefix . '_settings' => array(
 			'selector' => '#menu-settings',
@@ -53,19 +65,21 @@ function custom_initial_pointers( $pointers, $prefix ) {
 			'selector' => '#menu-posts',
 			'title' => __( 'PointerPlus for Posts', 'your-domain' ),
 			'text' => __( 'One more pointer.', 'your-domain' ),
+			'post_type' => array( 'post' ),
 			'width' => 350,
 		),
 		$prefix . '_pages' => array(
 			'selector' => '#menu-pages',
 			'title' => __( 'PointerPlus Pages', 'your-domain' ),
 			'text' => __( 'A pointer for pages.', 'your-domain' ),
+			'post_type' => array( 'page' )
 		),
-		$prefix . '_show-settings-link' => array(
+		$prefix . '_contextual_tab' => array(
 			'selector' => '#show-settings-link',
-			'title' => __( ' PointerPlus Help', 'your-domain' ),
-			'text' => __( 'A pointer for help tab.', 'your-domain' ),
+			'title' => __( 'PointerPlus Help', 'your-domain' ),
+			'text' => __( 'A pointer for help tab. Go to Posts and Pages for other pointers.', 'your-domain' ),
 			'edge' => 'top',
-			'align' => 'right'
+			'align' => 'right',
 		)
 			) );
 }
