@@ -1,6 +1,1 @@
 /* PointerPlus Based on QueryLoop Pointer */
-
-/* Keep pointer fixed when menu is sticky */
-body:not(.sticky-menu) .pointerplus {
-	position: fixed !important;
-}

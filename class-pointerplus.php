@@ -86,7 +86,6 @@ class PointerPlus {
 	 * Check that pointers haven't been dismissed already. If there are pointers to show, enqueue assets.
 	 */
 	function maybe_add_pointers() {
-
 		// Get default pointers that we want to create
 		$default_keys = $this->initial_pointers();
 
@@ -109,13 +108,9 @@ class PointerPlus {
 	 * @since 1.0.0
 	 */
 	function admin_enqueue_assets() {
-
 		$base_url = plugins_url( '', __FILE__ );
-
 		wp_enqueue_style( $this->prefix, $base_url . '/pointerplus.css', array( 'wp-pointer' ) );
-
 		wp_enqueue_script( $this->prefix, $base_url . '/pointerplus.js', array( 'wp-pointer' ) );
-
 		wp_localize_script( $this->prefix, 'pointerplus', apply_filters( 'pointerplus_js_vars', $this->pointers ) );
 	}
 
