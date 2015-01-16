@@ -12,7 +12,7 @@
           align: pointer.align
         },
         pointerWidth: parseInt(pointer.width),
-        pointerClass: ('left' === pointer.edge || 'right' === pointer.edge) ? 'wp-pointer pointerplus' + pointer.class : ('wp-pointer pointerplus pp-' + key),
+        pointerClass: 'wp-pointer pointerplus' + pointer.class,
         close: function () {
           $.post(ajaxurl, {
             pointer: key,
