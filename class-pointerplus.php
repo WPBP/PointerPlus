@@ -33,12 +33,13 @@ class PointerPlus {
 	function initial_pointers() {
 		global $pagenow;
 		$defaults = array(
-			'class' => 'pointerplus',
+			'class' => '',
 			'width' => 300, //only fixed value
 			'align' => 'middle',
 			'edge' => 'left',
 			'post_type' => array(),
 			'pages' => array(),
+			'icon_class' => ''
 		);
 		$screen = get_current_screen();
 		$current_post_type = isset( $screen->post_type ) ? $screen->post_type : false;

@@ -60,25 +60,29 @@ function custom_initial_pointers( $pointers, $prefix ) {
 			'title' => __( 'PointerPlus Test', 'your-domain' ),
 			'text' => __( 'The plugin is active and ready to start working.', 'your-domain' ),
 			'width' => 260,
+			'icon_class' => 'dashicons-admin-settings',
 		),
 		$prefix . '_posts' => array(
 			'selector' => '#menu-posts',
 			'title' => __( 'PointerPlus for Posts', 'your-domain' ),
 			'text' => __( 'One more pointer.', 'your-domain' ),
 			'post_type' => array( 'post' ),
+			'icon_class' => 'dashicons-admin-post',
 			'width' => 350,
 		),
 		$prefix . '_pages' => array(
 			'selector' => '#menu-pages',
 			'title' => __( 'PointerPlus Pages', 'your-domain' ),
 			'text' => __( 'A pointer for pages.', 'your-domain' ),
-			'post_type' => array( 'page' )
+			'post_type' => array( 'page' ),
+			'icon_class' => 'dashicons-admin-post'
 		),
 		$prefix . '_users' => array(
 			'selector' => '#menu-users',
 			'title' => __( 'PointerPlus Users', 'your-domain' ),
 			'text' => __( 'A pointer for users.', 'your-domain' ),
-			'pages' => array( 'users.php' )
+			'pages' => array( 'users.php' ),
+			'icon_class' => 'dashicons-admin-users'
 		),
 		$prefix . '_contextual_tab' => array(
 			'selector' => '#show-settings-link',
@@ -86,6 +90,7 @@ function custom_initial_pointers( $pointers, $prefix ) {
 			'text' => __( 'A pointer for help tab.<br>Go to Posts, Pages or Users for other pointers.', 'your-domain' ),
 			'edge' => 'top',
 			'align' => 'right',
+			'icon_class' => 'dashicons-welcome-learn-more'
 		)
 			) );
 }
