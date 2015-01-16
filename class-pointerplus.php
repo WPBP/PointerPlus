@@ -31,10 +31,21 @@ class PointerPlus {
 	 * @since 1.0.0
 	 */
 	function initial_pointers() {
-		return apply_filters( 'pointerplus_list', array(
+		$defaults = array(
+			'class' => 'pointerplus',
+			'width' => 300,
+			'align' => 'middle',
+			'edge' => 'left',
+		);
+		$pointers = apply_filters( 'pointerplus_list', array(
 				// Pointers are added through the 'initial_pointerplus' filter so you can
 				// have the localization set to your own text domain.
 				), $this->prefix );
+		foreach ( $pointers as $key => $pointer ) {
+			$pointers[$key] = wp_parse_args($pointer, $defaults);
+		}
+		
+		return $pointers;
 	}
 
 	/**

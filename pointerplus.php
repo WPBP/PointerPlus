@@ -45,39 +45,27 @@ function custom_initial_pointers( $pointers, $prefix ) {
 	return array_merge( $pointers, array(
 		$prefix . '_settings' => array(
 			'selector' => '#menu-settings',
-			'title' =>  __( 'PointerPlus Test', 'your-domain' ) ,
-			'text' =>  __( 'The plugin is active and ready to start working.', 'your-domain' ) ,
-			'edge' => 'left',
-			'align' => 'middle',
+			'title' => __( 'PointerPlus Test', 'your-domain' ),
+			'text' => __( 'The plugin is active and ready to start working.', 'your-domain' ),
 			'width' => 260,
-			'class' => 'pointerplus',
 		),
 		$prefix . '_posts' => array(
 			'selector' => '#menu-posts',
-			'title' =>  __( 'PointerPlus for Posts', 'your-domain' ) ,
-			'text' =>  __( 'One more pointer.', 'your-domain' ) ,
-			'edge' => 'left',
-			'align' => 'middle',
+			'title' => __( 'PointerPlus for Posts', 'your-domain' ),
+			'text' => __( 'One more pointer.', 'your-domain' ),
 			'width' => 350,
-			'class' => 'pointerplus',
 		),
 		$prefix . '_pages' => array(
 			'selector' => '#menu-pages',
-			'title' =>  __( 'PointerPlus Pages', 'your-domain' ) ,
-			'text' =>  __( 'A pointer for pages.', 'your-domain' ) ,
-			'edge' => 'left',
-			'align' => 'middle',
-			'width' => 300,
-			'class' => 'pointerplus',
+			'title' => __( 'PointerPlus Pages', 'your-domain' ),
+			'text' => __( 'A pointer for pages.', 'your-domain' ),
 		),
 		$prefix . '_show-settings-link' => array(
 			'selector' => '#show-settings-link',
-			'title' =>  __( ' PointerPlus Help', 'your-domain' ) ,
-			'text' =>  __( 'A pointer for help tab.', 'your-domain' ) ,
+			'title' => __( ' PointerPlus Help', 'your-domain' ),
+			'text' => __( 'A pointer for help tab.', 'your-domain' ),
 			'edge' => 'top',
-			'align' => 'right',
-			'width' => 300,
-			'class' => 'pointerplus',
+			'align' => 'right'
 		)
 			) );
 }
