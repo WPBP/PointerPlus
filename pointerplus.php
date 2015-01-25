@@ -19,7 +19,7 @@ require_once 'class-pointerplus.php';
 new PointerPlus( array( 'prefix' => 'your-domain' ) );
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////// Everything after this point is only for pointerplus configuration ///////////////////////
+//////////////////// Everything after this point is only for pointerplus configuration ////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -51,6 +51,8 @@ function custom_initial_pointers( $pointers, $prefix ) {
 	  'edge' => 'left',
 	  'post_type' => array(),
 	  'pages' => 'array(),
+	  'jsnext' => '' //empty [t = pointer instance, $ = jQuery]
+	  'show' => 'open' //default
 	  );
 	 */
 
@@ -84,13 +86,28 @@ function custom_initial_pointers( $pointers, $prefix ) {
 			'pages' => array( 'users.php' ),
 			'icon_class' => 'dashicons-admin-users'
 		),
-		$prefix . '_contextual_tab' => array(
+		$prefix . '_settings_tab' => array(
 			'selector' => '#show-settings-link',
+			'title' => __( 'PointerPlus Help', 'your-domain' ),
+			'text' => __( 'A pointer with action.', 'your-domain' ),
+			'edge' => 'top',
+			'align' => 'right',
+			'icon_class' => 'dashicons-welcome-learn-more',
+			'jsnext' => "button = $('<a id=\"pointer-close\" class=\"button action\">".__('Next')."</a>');
+                    button.bind('click.pointer', function () {
+                        t.element.pointer('close');
+						$('#contextual-help-link').pointer('open');
+                    });
+                    return button;"
+		),
+		$prefix . '_contextual_tab' => array(
+			'selector' => '#contextual-help-link',
 			'title' => __( 'PointerPlus Help', 'your-domain' ),
 			'text' => __( 'A pointer for help tab.<br>Go to Posts, Pages or Users for other pointers.', 'your-domain' ),
 			'edge' => 'top',
 			'align' => 'right',
-			'icon_class' => 'dashicons-welcome-learn-more'
+			'icon_class' => 'dashicons-welcome-learn-more',
+			'show' => 'close'
 		)
 			) );
 }

@@ -5,6 +5,9 @@
   $(document).ready(function () {
     $.each(pointerplus, function (key, pointer) {
       pointer.class += ' pp-' + key;
+      if (!pointer.show) {
+        pointer.show = 'open';
+      }
       $(pointer.selector).pointer({
         content: '<h3>' + pointer.title + '</h3><p>' + pointer.text + '</p>',
         position: {
@@ -13,13 +16,26 @@
         },
         pointerWidth: parseInt(pointer.width),
         pointerClass: 'wp-pointer pointerplus' + pointer.class,
+        buttons: function (event, t) {
+          if (pointer.jsnext) {
+            var jsnext = new Function('t', '$', pointer.jsnext);
+            return jsnext(event, t, $);
+          } else {
+            var close = (wpPointerL10n) ? wpPointerL10n.dismiss : 'Dismiss',
+                    button = $('<a class="close" href="#">' + close + '</a>');
+            return button.bind('click.pointer', function (e) {
+              e.preventDefault();
+              t.element.pointer('close');
+            });
+          }
+        },
         close: function () {
           $.post(ajaxurl, {
             pointer: key,
             action: 'dismiss-wp-pointer'
           });
         }
-      }).pointer('open');
+      }).pointer(pointer.show);
       // Hack for custom dashicons
       if (pointer.icon_class !== '') {
         $('.pp-' + key + ' .wp-pointer-content').addClass('pp-pointer-content').removeClass('wp-pointer-content');
