@@ -1,8 +1,7 @@
 /* PointerPlus Based on QueryLoop Pointer */
 
-(function ($) {
+jQuery(function($) {
   'use strict';
-  $(document).ready(function () {
     $.each(pointerplus, function (key, pointer) {
       pointer.class += ' pp-' + key;
       if (!pointer.show) {
@@ -19,10 +18,10 @@
         buttons: function (event, t) {
           if (pointer.jsnext) {
             var jsnext = new Function('t', '$', pointer.jsnext);
-            return jsnext(event, t, $);
+            return jsnext(event, t, jQuery);
           } else {
             var close = (wpPointerL10n) ? wpPointerL10n.dismiss : 'Dismiss',
-                    button = $('<a class="close" href="#">' + close + '</a>');
+                    button = jQuery('<a class="close" href="#">' + close + '</a>');
             return button.bind('click.pointer', function (e) {
               e.preventDefault();
               t.element.pointer('close');
@@ -42,5 +41,4 @@
         $('.pp-' + key + ' .pp-pointer-content h3').addClass('dashicons-before').addClass(pointer.icon_class);
       }
     });
-  });
-})(jQuery);
+});
