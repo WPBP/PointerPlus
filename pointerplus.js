@@ -18,7 +18,7 @@ jQuery(function($) {
         buttons: function (event, t) {
           if (pointer.jsnext) {
             var jsnext = new Function('t', '$', pointer.jsnext);
-            return jsnext(event, t, jQuery);
+            return jsnext(t, jQuery);
           } else {
             var close = (wpPointerL10n) ? wpPointerL10n.dismiss : 'Dismiss',
                     button = jQuery('<a class="close" href="#">' + close + '</a>');

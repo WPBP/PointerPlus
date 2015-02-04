@@ -52,6 +52,7 @@ function custom_initial_pointers( $pointers, $prefix ) {
 	  'post_type' => array(),
 	  'pages' => 'array(),
 	  'jsnext' => '' //empty [t = pointer instance, $ = jQuery]
+	  'phpcode' => function() //executed on admin_notices action
 	  'show' => 'open' //default
 	  );
 	 */
@@ -63,6 +64,12 @@ function custom_initial_pointers( $pointers, $prefix ) {
 			'text' => __( 'The plugin is active and ready to start working.', 'your-domain' ),
 			'width' => 260,
 			'icon_class' => 'dashicons-admin-settings',
+			'jsnext' => "button = jQuery('<a id=\"pointer-close\" class=\"button action thickbox\" href=\"#TB_inline?width=700&height=500&inlineId=menu-popup\">" . __( 'Open Popup' ) . "</a>');
+                    button.bind('click.pointer', function () {
+                        t.element.pointer('close');
+                    });
+                    return button;",
+			'phpcode' => custom_phpcode_thickbox()
 		),
 		$prefix . '_posts' => array(
 			'selector' => '#menu-posts',
@@ -93,10 +100,10 @@ function custom_initial_pointers( $pointers, $prefix ) {
 			'edge' => 'top',
 			'align' => 'right',
 			'icon_class' => 'dashicons-welcome-learn-more',
-			'jsnext' => "button = $('<a id=\"pointer-close\" class=\"button action\">".__('Next')."</a>');
+			'jsnext' => "button = jQuery('<a id=\"pointer-close\" class=\"button action\">" . __( 'Next' ) . "</a>');
                     button.bind('click.pointer', function () {
                         t.element.pointer('close');
-						$('#contextual-help-link').pointer('open');
+						jQuery('#contextual-help-link').pointer('open');
                     });
                     return button;"
 		),
@@ -113,3 +120,15 @@ function custom_initial_pointers( $pointers, $prefix ) {
 }
 
 add_filter( 'pointerplus_list', 'custom_initial_pointers', 10, 2 );
+
+//Function created for support PHP =>5.2
+//You can use the anonymous function that are not supported by PHP 5.2
+function custom_phpcode_thickbox() {
+	add_thickbox();
+	echo '<div id="menu-popup" style="display:none;">
+			<p style="text-align: center;">
+				 This is my hidden content! It will appear in ThickBox when the link is clicked.
+				 <iframe width="560" height="315" src="https://www.youtube.com/embed/EaWfDuXQfo0" frameborder="0" allowfullscreen></iframe>
+			</p>
+		</div>';
+}

@@ -92,7 +92,7 @@ class PointerPlus {
 				} else {
 					new WP_Error( 'broke', __( 'PointerPlus Error: pages is not an array!' ) );
 				}
-			} 
+			}
 		}
 
 		return $pointers;
@@ -115,6 +115,12 @@ class PointerPlus {
 		if ( !empty( $diff ) ) {
 			$this->pointers = $diff;
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_assets' ) );
+
+			foreach ( $diff as $pointer ) {
+				if ( isset( $pointer[ 'phpcode' ] ) ) {
+					add_action( 'admin_notices', $pointer[ 'phpcode' ] );
+				}
+			}
 		}
 	}
 
