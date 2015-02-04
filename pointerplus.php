@@ -16,7 +16,9 @@ if ( !defined( 'WPINC' ) ) {
 
 // Load and initialize class. If you're loading the PointerPlus class in another plugin or theme, this is all you need.
 require_once 'class-pointerplus.php';
-new PointerPlus( array( 'prefix' => 'your-domain' ) );
+$pointerplus = new PointerPlus( array( 'prefix' => 'your-domain' ) );
+// With this you can reset all the pointer with your prefix
+//$pointerplus->reset_pointer();
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////// Everything after this point is only for pointerplus configuration ////////////////////

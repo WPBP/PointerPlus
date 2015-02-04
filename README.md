@@ -11,6 +11,8 @@ Feature:
 * Show by page (ex: users.php)
 * Custom dashicon (https://developer.wordpress.org/resource/dashicons)
 * Hide feature
-* Custom button with callback
+* Custom button with JS callback
+* Custom PHP Code to execute at loading of the page
+* Reset the pointer by prefix
 
 Check `pointerplus.php` as a example!
