@@ -13,6 +13,6 @@ Feature:
 * Hide feature
 * Custom button with JS callback
 * Custom PHP Code to execute at loading of the page
-* Reset the pointer by prefix
+* Reset the pointer by prefix (by user id)
 
 Check `pointerplus.php` as a example!

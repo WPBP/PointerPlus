@@ -140,8 +140,11 @@ class PointerPlus {
 		add_action( 'current_screen', array( $this, '_reset_pointer' ), 0 );
 	}
 	
-	function _reset_pointer() {
-		$pointers = explode( ',', get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true ) );
+	function _reset_pointer($id = 'me') {
+		if($id === 'me') {
+			$id = get_current_user_id();
+		}
+		$pointers = explode( ',', get_user_meta( $id, 'dismissed_wp_pointers', true ) );
 		foreach ( $pointers as $key => $pointer ) {
 			if ( strpos( $pointer, $this->prefix ) === 0 ) {
 				unset( $pointers[ $key ] );
