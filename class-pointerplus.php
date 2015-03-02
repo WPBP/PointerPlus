@@ -45,7 +45,7 @@ class PointerPlus {
 		$current_post_type = isset( $screen->post_type ) ? $screen->post_type : false;
 		$search_pt = false;
 
-		$pointers = apply_filters( 'pointerplus_list', array(
+		$pointers = apply_filters( $this->prefix . '-pointerplus_list', array(
 				// Pointers are added through the 'initial_pointerplus' filter
 				), $this->prefix );
 
@@ -132,16 +132,26 @@ class PointerPlus {
 	function admin_enqueue_assets() {
 		$base_url = plugins_url( '', __FILE__ );
 		wp_enqueue_style( $this->prefix, $base_url . '/pointerplus.css', array( 'wp-pointer' ) );
-		wp_enqueue_script( $this->prefix, $base_url . '/pointerplus.js', array( 'wp-pointer' ) );
-		wp_localize_script( $this->prefix, 'pointerplus', apply_filters( 'pointerplus_js_vars', $this->pointers ) );
+		wp_enqueue_script( $this->prefix, $base_url . '/pointerplus.js?var=' . str_replace( '-', '_', $this->prefix ) . '_pointerplus', array( 'wp-pointer' ) );
+		wp_localize_script( $this->prefix, str_replace( '-', '_', $this->prefix ) . '_pointerplus', apply_filters( $this->prefix . '_pointerplus_js_vars', $this->pointers ) );
 	}
 
+	/**
+	 * Reset pointer
+	 *
+	 * @since 1.0.0
+	 */
 	function reset_pointer() {
 		add_action( 'current_screen', array( $this, '_reset_pointer' ), 0 );
 	}
-	
-	function _reset_pointer($id = 'me') {
-		if($id === 'me') {
+
+	/**
+	 * Reset pointer in hook
+	 *
+	 * @since 1.0.0
+	 */
+	function _reset_pointer( $id = 'me' ) {
+		if ( $id === 'me' ) {
 			$id = get_current_user_id();
 		}
 		$pointers = explode( ',', get_user_meta( $id, 'dismissed_wp_pointers', true ) );
@@ -150,8 +160,8 @@ class PointerPlus {
 				unset( $pointers[ $key ] );
 			}
 		}
-		$meta = implode(',', $pointers);
-		
+		$meta = implode( ',', $pointers );
+
 		update_user_meta( get_current_user_id(), 'dismissed_wp_pointers', $meta );
 	}
 

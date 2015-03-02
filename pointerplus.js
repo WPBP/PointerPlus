@@ -1,12 +1,34 @@
 /* PointerPlus Based on QueryLoop Pointer */
 
-jQuery(function($) {
+//Read the var with data
+var pp_scripts = document.getElementsByTagName("script");
+pp_scripts = pp_scripts[pp_scripts.length - 1];
+
+jQuery(function ($) {
   'use strict';
-    $.each(pointerplus, function (key, pointer) {
-      pointer.class += ' pp-' + key;
-      if (!pointer.show) {
-        pointer.show = 'open';
-      }
+
+  $.fn.onAvailable = function (fn) {
+    var sel = this.selector;
+    var timer;
+    if (this.length > 0) {
+      fn.call(this);
+    } else {
+      timer = setInterval(function () {
+        if ($(sel).length > 0) {
+          fn.call($(sel));
+          clearInterval(timer);
+        }
+      }, 300);
+    }
+  };
+
+  var pointerplus = eval(getParams(pp_scripts).var);
+  $.each(pointerplus, function (key, pointer) {
+    pointer.class += ' pp-' + key;
+    if (!pointer.show) {
+      pointer.show = 'open';
+    }
+    jQuery(pointer.selector).onAvailable(function () {
       $(pointer.selector).pointer({
         content: '<h3>' + pointer.title + '</h3><p>' + pointer.text + '</p>',
         position: {
@@ -41,4 +63,17 @@ jQuery(function($) {
         $('.pp-' + key + ' .pp-pointer-content h3').addClass('dashicons-before').addClass(pointer.icon_class);
       }
     });
+  });
 });
+
+function getParams(script_choosen) {
+  // Get an array of key=value strings of params
+  var pa = script_choosen.src.split("?").pop().split("&");
+  // Split each key=value into array, the construct js object
+  var p = {};
+  for (var j = 0; j < pa.length; j++) {
+    var kv = pa[j].split("=");
+    p[kv[0]] = kv[1];
+  }
+  return p;
+}

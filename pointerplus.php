@@ -120,8 +120,8 @@ function custom_initial_pointers( $pointers, $prefix ) {
 		)
 			) );
 }
-
-add_filter( 'pointerplus_list', 'custom_initial_pointers', 10, 2 );
+// Your prefix
+add_filter( 'your-domain' . 'pointerplus_list', 'custom_initial_pointers', 10, 2 );
 
 //Function created for support PHP =>5.2
 //You can use the anonymous function that are not supported by PHP 5.2

@@ -14,5 +14,7 @@ Feature:
 * Custom button with JS callback
 * Custom PHP Code to execute at loading of the page
 * Reset the pointer by prefix (by user id)
+* Support for different version of the library
+* Wait the available selector
 
 Check `pointerplus.php` as a example!
