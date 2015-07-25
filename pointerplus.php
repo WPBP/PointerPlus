@@ -10,6 +10,7 @@
  * Text Domain: your-domain
  * Domain Path: /languages
  */
+
 if ( !defined( 'WPINC' ) ) {
 	die;
 }
@@ -17,12 +18,12 @@ if ( !defined( 'WPINC' ) ) {
 // Load and initialize class. If you're loading the PointerPlus class in another plugin or theme, this is all you need.
 require_once 'class-pointerplus.php';
 $pointerplus = new PointerPlus( array( 'prefix' => 'your-domain' ) );
-// With this you can reset all the pointer with your prefix
-//$pointerplus->reset_pointer();
+// With this line of code you can reset all the pointer with your prefix
+// $pointerplus->reset_pointer();
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////// Everything after this point is only for pointerplus configuration ////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ *  Everything after this point is only for pointerplus configuration
+ */
 
 /**
  * Initialize localization routines. If you're already doing it in your plugin or theme dismiss this.
@@ -123,8 +124,12 @@ function custom_initial_pointers( $pointers, $prefix ) {
 // Your prefix
 add_filter( 'your-domain' . 'pointerplus_list', 'custom_initial_pointers', 10, 2 );
 
-//Function created for support PHP =>5.2
-//You can use the anonymous function that are not supported by PHP 5.2
+/**
+ * Function created for support PHP => 5.2
+ * You can use the anonymous function that are not supported by PHP 5.2
+ * 
+ * @since 1.0.0
+ */
 function custom_phpcode_thickbox() {
 	add_thickbox();
 	echo '<div id="menu-popup" style="display:none;">

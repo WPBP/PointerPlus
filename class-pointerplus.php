@@ -2,7 +2,12 @@
 
 /**
  * Class PointerPlus based on QL_Pointer to facilitate creation of WP Pointers
- * @author QueryLoop
+ * 
+ * @package   PointerPlus
+ * @author    QueryLoop & Mte90
+ * @license   GPL-2.0+
+ * @link      http://mte90.net
+ * @copyright 2014 GPL
  */
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) {
@@ -33,21 +38,21 @@ class PointerPlus {
 	function initial_pointers() {
 		global $pagenow;
 		$defaults = array(
-			'class' => '',
-			'width' => 300, //only fixed value
-			'align' => 'middle',
-			'edge' => 'left',
-			'post_type' => array(),
-			'pages' => array(),
-			'icon_class' => ''
+		    'class' => '',
+		    'width' => 300, //only fixed value
+		    'align' => 'middle',
+		    'edge' => 'left',
+		    'post_type' => array(),
+		    'pages' => array(),
+		    'icon_class' => ''
 		);
 		$screen = get_current_screen();
 		$current_post_type = isset( $screen->post_type ) ? $screen->post_type : false;
 		$search_pt = false;
 
 		$pointers = apply_filters( $this->prefix . '-pointerplus_list', array(
-				// Pointers are added through the 'initial_pointerplus' filter
-				), $this->prefix );
+			// Pointers are added through the 'initial_pointerplus' filter
+			), $this->prefix );
 
 		foreach ( $pointers as $key => $pointer ) {
 			$pointers[ $key ] = wp_parse_args( $pointer, $defaults );
@@ -69,7 +74,7 @@ class PointerPlus {
 					} else {
 						new WP_Error( 'broke', __( 'PointerPlus Error: post_type is not an array!' ) );
 					}
-					//If not in CPT view remove all the pointers with post_type
+					// If not in CPT view remove all the pointers with post_type
 				} else {
 					unset( $pointers[ $key ] );
 				}
@@ -100,6 +105,8 @@ class PointerPlus {
 
 	/**
 	 * Check that pointers haven't been dismissed already. If there are pointers to show, enqueue assets.
+	 * 
+	 * @since 1.0.0
 	 */
 	function maybe_add_pointers() {
 		// Get default pointers that we want to create
