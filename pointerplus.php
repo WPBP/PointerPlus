@@ -53,7 +53,9 @@ function custom_initial_pointers( $pointers, $prefix ) {
 	  'align' => 'middle',
 	  'edge' => 'left',
 	  'post_type' => array(),
-	  'pages' => 'array(),
+	  'pages' => array(),
+	  'next' => 'the id of the pointer to jump on Next button click',
+	  // Or a custom js solution
 	  'jsnext' => '' //empty [t = pointer instance, $ = jQuery]
 	  'phpcode' => function() //executed on admin_notices action
 	  'show' => 'open' //default
@@ -103,12 +105,7 @@ function custom_initial_pointers( $pointers, $prefix ) {
 			'edge' => 'top',
 			'align' => 'right',
 			'icon_class' => 'dashicons-welcome-learn-more',
-			'jsnext' => "button = jQuery('<a id=\"pointer-close\" class=\"button action\">" . __( 'Next' ) . "</a>');
-                    button.bind('click.pointer', function () {
-                        t.element.pointer('close');
-						jQuery('#contextual-help-link').pointer('open');
-                    });
-                    return button;"
+			'next' => $prefix . '_contextual_tab'
 		),
 		$prefix . '_contextual_tab' => array(
 			'selector' => '#contextual-help-link',
@@ -122,7 +119,7 @@ function custom_initial_pointers( $pointers, $prefix ) {
 			) );
 }
 // Your prefix
-add_filter( 'your-domain' . 'pointerplus_list', 'custom_initial_pointers', 10, 2 );
+add_filter( 'your-domain' . '-pointerplus_list', 'custom_initial_pointers', 10, 2 );
 
 /**
  * Function created for support PHP => 5.2

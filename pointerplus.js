@@ -41,6 +41,13 @@ jQuery(function ($) {
           if (pointer.jsnext) {
             var jsnext = new Function('t', '$', pointer.jsnext);
             return jsnext(t, jQuery);
+          } else if (pointer.next) {
+            button = jQuery('<a id="pointer-close" class="button action">' + pointerplus.l10n.next + '</a>');
+            button.bind('click.pointer', function () {
+              t.element.pointer('close');
+              jQuery(pointerplus[pointer.next].selector).pointer('open');
+            });
+            return button;
           } else {
             var close = (wpPointerL10n) ? wpPointerL10n.dismiss : 'Dismiss',
                     button = jQuery('<a class="close" href="#">' + close + '</a>');
