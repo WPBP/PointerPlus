@@ -71,6 +71,11 @@ jQuery(function ($) {
       }
     });
   });
+  $.each(pointerplus, function (key, pointer) {
+      if (pointerplus[pointer.next]) {
+        jQuery(pointerplus[pointer.next].selector).pointer('close');
+      }
+  });
 });
 
 function getParams(script_choosen) {
