@@ -46,6 +46,9 @@ jQuery(function ($) {
             button.bind('click.pointer', function () {
               t.element.pointer('close');
               jQuery(pointerplus[pointer.next].selector).pointer('open');
+              if (pointerplus[pointer.next].icon_class !== '') {
+                $('.pp-' + pointer.next + ' .pp-pointer-content h3').addClass('dashicons-before').addClass(pointerplus[pointer.next].icon_class);
+              }
             });
             return button;
           } else {
