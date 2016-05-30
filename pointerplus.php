@@ -24,6 +24,12 @@ class PointerPlus {
   var $prefix = 'pointerplus';
   var $pointers = array();
 
+  /**
+   * Construct the class parameter
+   * 
+   * @param array $args Parameters of class.
+   * @return void
+   */
   function __construct( $args = array() ) {
     if ( isset( $args[ 'prefix' ] ) ) {
 	$this->prefix = $args[ 'prefix' ];
@@ -81,22 +87,24 @@ class PointerPlus {
 	  }
 	}
 	// Clean from null ecc
-	if ( is_array( $pointers[ $key ][ 'pages' ] ) ) {
-	  $pointers[ $key ][ 'pages' ] = array_filter( $pointers[ $key ][ 'pages' ] );
-	}
-	if ( !empty( $pointers[ $key ][ 'pages' ] ) ) {
+	if ( isset( $pointers[ $key ][ 'pages' ] ) ) {
 	  if ( is_array( $pointers[ $key ][ 'pages' ] ) ) {
-	    // Search the page
-	    foreach ( $pointers[ $key ][ 'pages' ] as $value ) {
-		if ( $pagenow === $value ) {
-		  $search_pt = true;
+	    $pointers[ $key ][ 'pages' ] = array_filter( $pointers[ $key ][ 'pages' ] );
+	  }
+	  if ( !empty( $pointers[ $key ][ 'pages' ] ) ) {
+	    if ( is_array( $pointers[ $key ][ 'pages' ] ) ) {
+		// Search the page
+		foreach ( $pointers[ $key ][ 'pages' ] as $value ) {
+		  if ( $pagenow === $value ) {
+		    $search_pt = true;
+		  }
 		}
+		if ( $search_pt === false ) {
+		  unset( $pointers[ $key ] );
+		}
+	    } else {
+		new WP_Error( 'broke', __( 'PointerPlus Error: pages is not an array!' ) );
 	    }
-	    if ( $search_pt === false ) {
-		unset( $pointers[ $key ] );
-	    }
-	  } else {
-	    new WP_Error( 'broke', __( 'PointerPlus Error: pages is not an array!' ) );
 	  }
 	}
     }

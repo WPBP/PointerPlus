@@ -4,6 +4,18 @@
 var pp_scripts = document.getElementsByTagName("script");
 pp_scripts = pp_scripts[pp_scripts.length - 1];
 
+function getParams(script_choosen) {
+  // Get an array of key=value strings of params
+  var pa = script_choosen.src.split("?").pop().split("&");
+  // Split each key=value into array, the construct js object
+  var p = {};
+  for (var j = 0; j < pa.length; j++) {
+    var kv = pa[j].split("=");
+    p[kv[0]] = kv[1];
+  }
+  return p;
+}
+
 jQuery(function ($) {
   'use strict';
 
@@ -38,6 +50,7 @@ jQuery(function ($) {
         pointerWidth: parseInt(pointer.width),
         pointerClass: 'wp-pointer pointerplus' + pointer.class,
         buttons: function (event, t) {
+		  var button;
           if (pointer.jsnext) {
             var jsnext = new Function('t', '$', pointer.jsnext);
             return jsnext(t, jQuery);
@@ -52,8 +65,7 @@ jQuery(function ($) {
             });
             return button;
           } else {
-            var close = (wpPointerL10n) ? wpPointerL10n.dismiss : 'Dismiss',
-                    button = jQuery('<a class="close" href="#">' + close + '</a>');
+            var close = (wpPointerL10n) ? wpPointerL10n.dismiss : 'Dismiss', button = jQuery('<a class="close" href="#">' + close + '</a>');
             return button.bind('click.pointer', function (e) {
               e.preventDefault();
               t.element.pointer('close');
@@ -80,15 +92,3 @@ jQuery(function ($) {
       }
   });
 });
-
-function getParams(script_choosen) {
-  // Get an array of key=value strings of params
-  var pa = script_choosen.src.split("?").pop().split("&");
-  // Split each key=value into array, the construct js object
-  var p = {};
-  for (var j = 0; j < pa.length; j++) {
-    var kv = pa[j].split("=");
-    p[kv[0]] = kv[1];
-  }
-  return p;
-}

@@ -5,7 +5,7 @@ Super pointer creation for WP Admin
 
 ## Install
 
-`composer require wpbp/pointerplus`
+`composer require wpbp/pointerplus:dev-master`
 
 [composer-php52](https://github.com/composer-php52/composer-php52) supported.
 
