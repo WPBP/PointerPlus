@@ -1,138 +1,177 @@
 <?php
 
 /**
- * Plugin Name: Simple Pointers with PointerPlus
- * Plugin URI: https://github.com/Mte90/pointerplus
- * Description: Facilitates the creation of single pointers for WP Admin.
- * Author: Mte90 & QueryLoop
- * Author URI: http://mte90.net
- * Version: 1.0.0
- * Text Domain: your-domain
- * Domain Path: /languages
+ * @package   PointerPlus
+ * @author    QueryLoop & Mte90
+ * @license   GPL-3.0+
+ * @link      http://mte90.net
+ * @copyright 2014-2016 GPL
  */
-
-if ( !defined( 'WPINC' ) ) {
-	die;
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) {
+  exit;
 }
 
-// Load and initialize class. If you're loading the PointerPlus class in another plugin or theme, this is all you need.
-require_once 'class-pointerplus.php';
-$pointerplus = new PointerPlus( array( 'prefix' => 'your-domain' ) );
-// With this line of code you can reset all the pointer with your prefix
-// $pointerplus->reset_pointer();
-
 /**
- *  Everything after this point is only for pointerplus configuration
+ * Super pointer creation for WP Admin
  */
+class PointerPlus {
 
-/**
- * Initialize localization routines. If you're already doing it in your plugin or theme dismiss this.
- *
- * @since 1.0.0
- */
-function pointerplus_load_localization() {
-	load_plugin_textdomain( 'your-domain', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
-}
+  /**
+   * Prefix strings like styles, scripts and pointers IDs
+   * @var string
+   */
+  var $prefix = 'pointerplus';
+  var $pointers = array();
 
-add_action( 'plugins_loaded', 'pointerplus_load_localization' );
+  function __construct( $args = array() ) {
+    if ( isset( $args[ 'prefix' ] ) ) {
+	$this->prefix = $args[ 'prefix' ];
+    }
+    add_action( 'current_screen', array( $this, 'maybe_add_pointers' ) );
+  }
 
-/**
- * Add pointers.
- *
- * @param $pointers
- * @param $prefix for your pointers
- *
- * @return mixed
- */
-function custom_initial_pointers( $pointers, $prefix ) {
-	/*
-	 * Default parameters:
-	  $defaults = array(
-	  'class' => 'pointerplus',
-	  'width' => 300, //fixed value
+  /**
+   * Set pointers and its options
+   *
+   * @since 1.0.0
+   */
+  function initial_pointers() {
+    global $pagenow;
+    $defaults = array(
+	  'class' => '',
+	  'width' => 300, //only fixed value
 	  'align' => 'middle',
 	  'edge' => 'left',
 	  'post_type' => array(),
 	  'pages' => array(),
-	  'next' => 'the id of the pointer to jump on Next button click',
-	  // Or a custom js solution
-	  'jsnext' => '' //empty [t = pointer instance, $ = jQuery]
-	  'phpcode' => function() //executed on admin_notices action
-	  'show' => 'open' //default
-	  );
-	 */
+	  'icon_class' => ''
+    );
+    $screen = get_current_screen();
+    $current_post_type = isset( $screen->post_type ) ? $screen->post_type : false;
+    $search_pt = false;
 
-	return array_merge( $pointers, array(
-		$prefix . '_settings' => array(
-			'selector' => '#menu-settings',
-			'title' => __( 'PointerPlus Test', 'your-domain' ),
-			'text' => __( 'The plugin is active and ready to start working.', 'your-domain' ),
-			'width' => 260,
-			'icon_class' => 'dashicons-admin-settings',
-			'jsnext' => "button = jQuery('<a id=\"pointer-close\" class=\"button action thickbox\" href=\"#TB_inline?width=700&height=500&inlineId=menu-popup\">" . __( 'Open Popup' ) . "</a>');
-                    button.bind('click.pointer', function () {
-                        t.element.pointer('close');
-                    });
-                    return button;",
-			'phpcode' => custom_phpcode_thickbox()
-		),
-		$prefix . '_posts' => array(
-			'selector' => '#menu-posts',
-			'title' => __( 'PointerPlus for Posts', 'your-domain' ),
-			'text' => __( 'One more pointer.', 'your-domain' ),
-			'post_type' => array( 'post' ),
-			'icon_class' => 'dashicons-admin-post',
-			'width' => 350,
-		),
-		$prefix . '_pages' => array(
-			'selector' => '#menu-pages',
-			'title' => __( 'PointerPlus Pages', 'your-domain' ),
-			'text' => __( 'A pointer for pages.', 'your-domain' ),
-			'post_type' => array( 'page' ),
-			'icon_class' => 'dashicons-admin-post'
-		),
-		$prefix . '_users' => array(
-			'selector' => '#menu-users',
-			'title' => __( 'PointerPlus Users', 'your-domain' ),
-			'text' => __( 'A pointer for users.', 'your-domain' ),
-			'pages' => array( 'users.php' ),
-			'icon_class' => 'dashicons-admin-users'
-		),
-		$prefix . '_settings_tab' => array(
-			'selector' => '#show-settings-link',
-			'title' => __( 'PointerPlus Help', 'your-domain' ),
-			'text' => __( 'A pointer with action.', 'your-domain' ),
-			'edge' => 'top',
-			'align' => 'right',
-			'icon_class' => 'dashicons-welcome-learn-more',
-			'next' => $prefix . '_contextual_tab'
-		),
-		$prefix . '_contextual_tab' => array(
-			'selector' => '#contextual-help-link',
-			'title' => __( 'PointerPlus Help', 'your-domain' ),
-			'text' => __( 'A pointer for help tab.<br>Go to Posts, Pages or Users for other pointers.', 'your-domain' ),
-			'edge' => 'top',
-			'align' => 'right',
-			'icon_class' => 'dashicons-welcome-learn-more',
-			'show' => 'close'
-		)
-			) );
-}
-// Your prefix
-add_filter( 'your-domain' . '-pointerplus_list', 'custom_initial_pointers', 10, 2 );
+    $pointers = apply_filters( $this->prefix . '-pointerplus_list', array(
+		// Pointers are added through the 'initial_pointerplus' filter
+		), $this->prefix );
 
-/**
- * Function created for support PHP => 5.2
- * You can use the anonymous function that are not supported by PHP 5.2
- * 
- * @since 1.0.0
- */
-function custom_phpcode_thickbox() {
-	add_thickbox();
-	echo '<div id="menu-popup" style="display:none;">
-			<p style="text-align: center;">
-				 This is my hidden content! It will appear in ThickBox when the link is clicked.
-				 <iframe width="560" height="315" src="https://www.youtube.com/embed/EaWfDuXQfo0" frameborder="0" allowfullscreen></iframe>
-			</p>
-		</div>';
+    foreach ( $pointers as $key => $pointer ) {
+	$pointers[ $key ] = wp_parse_args( $pointer, $defaults );
+	$search_pt = false;
+	// Clean from null ecc
+	$pointers[ $key ][ 'post_type' ] = array_filter( $pointers[ $key ][ 'post_type' ] );
+	if ( !empty( $pointers[ $key ][ 'post_type' ] ) ) {
+	  if ( !empty( $current_post_type ) ) {
+	    if ( is_array( $pointers[ $key ][ 'post_type' ] ) ) {
+		// Search the post_type
+		foreach ( $pointers[ $key ][ 'post_type' ] as $value ) {
+		  if ( $value === $current_post_type ) {
+		    $search_pt = true;
+		  }
+		}
+		if ( $search_pt === false ) {
+		  unset( $pointers[ $key ] );
+		}
+	    } else {
+		new WP_Error( 'broke', __( 'PointerPlus Error: post_type is not an array!' ) );
+	    }
+	    // If not in CPT view remove all the pointers with post_type
+	  } else {
+	    unset( $pointers[ $key ] );
+	  }
+	}
+	// Clean from null ecc
+	if ( is_array( $pointers[ $key ][ 'pages' ] ) ) {
+	  $pointers[ $key ][ 'pages' ] = array_filter( $pointers[ $key ][ 'pages' ] );
+	}
+	if ( !empty( $pointers[ $key ][ 'pages' ] ) ) {
+	  if ( is_array( $pointers[ $key ][ 'pages' ] ) ) {
+	    // Search the page
+	    foreach ( $pointers[ $key ][ 'pages' ] as $value ) {
+		if ( $pagenow === $value ) {
+		  $search_pt = true;
+		}
+	    }
+	    if ( $search_pt === false ) {
+		unset( $pointers[ $key ] );
+	    }
+	  } else {
+	    new WP_Error( 'broke', __( 'PointerPlus Error: pages is not an array!' ) );
+	  }
+	}
+    }
+
+    return $pointers;
+  }
+
+  /**
+   * Check that pointers haven't been dismissed already. If there are pointers to show, enqueue assets.
+   * 
+   * @since 1.0.0
+   */
+  function maybe_add_pointers() {
+    // Get default pointers that we want to create
+    $default_keys = $this->initial_pointers();
+
+    // Get pointers dismissed by user
+    $dismissed = explode( ',', get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true ) );
+
+    // Check that our pointers haven't been dismissed already
+    $diff = array_diff_key( $default_keys, array_combine( $dismissed, $dismissed ) );
+
+    // If we have some pointers to show, save them and start enqueuing assets to display them
+    if ( !empty( $diff ) ) {
+	$this->pointers = $diff;
+	add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_assets' ) );
+
+	foreach ( $diff as $pointer ) {
+	  if ( isset( $pointer[ 'phpcode' ] ) ) {
+	    add_action( 'admin_notices', $pointer[ 'phpcode' ] );
+	  }
+	}
+    }
+    $this->pointers[ 'l10n' ] = array( 'next' => __( 'Next' ) );
+  }
+
+  /**
+   * Enqueue pointer styles and scripts to display them.
+   *
+   * @since 1.0.0
+   */
+  function admin_enqueue_assets() {
+    $base_url = plugins_url( '', __FILE__ );
+    wp_enqueue_style( $this->prefix, $base_url . '/pointerplus.css', array( 'wp-pointer' ) );
+    wp_enqueue_script( $this->prefix, $base_url . '/pointerplus.js?var=' . str_replace( '-', '_', $this->prefix ) . '_pointerplus', array( 'wp-pointer' ) );
+    wp_localize_script( $this->prefix, str_replace( '-', '_', $this->prefix ) . '_pointerplus', apply_filters( $this->prefix . '_pointerplus_js_vars', $this->pointers ) );
+  }
+
+  /**
+   * Reset pointer
+   *
+   * @since 1.0.0
+   */
+  function reset_pointer() {
+    add_action( 'current_screen', array( $this, '_reset_pointer' ), 0 );
+  }
+
+  /**
+   * Reset pointer in hook
+   *
+   * @since 1.0.0
+   */
+  function _reset_pointer( $id = 'me' ) {
+    if ( $id === 'me' ) {
+	$id = get_current_user_id();
+    }
+    $pointers = explode( ',', get_user_meta( $id, 'dismissed_wp_pointers', true ) );
+    foreach ( $pointers as $key => $pointer ) {
+	if ( strpos( $pointer, $this->prefix ) === 0 ) {
+	  unset( $pointers[ $key ] );
+	}
+    }
+    $meta = implode( ',', $pointers );
+
+    update_user_meta( get_current_user_id(), 'dismissed_wp_pointers', $meta );
+  }
+
 }

@@ -1,0 +1,30 @@
+{
+  "name": "wpbp/pointerplus",
+  "description": "Super pointer creation for WP Admin",
+  "license": "GPL-3.0",
+  "keywords": [
+    "wordpress",
+    "pointer"
+  ],
+  "homepage": "https://github.com/WPBP/PointerPlus",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Daniele Scasciafratte",
+      "email": "mte90net@gmail.com",
+      "homepage": "http://mte90.net"
+    }
+  ],
+  "minimum-stability": "stable",
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/WPBP/PointerPlus.git"
+    }
+  ],
+  "autoload": {
+    "files": [
+      "pointerplus.php"
+    ]
+  }
+}
