@@ -5,12 +5,8 @@
  * @author    QueryLoop & Mte90
  * @license   GPL-3.0+
  * @link      http://mte90.net
- * @copyright 2014-2016 GPL
+ * @copyright 2014-2018 GPL
  */
-// Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) {
-  exit;
-}
 
 /**
  * Super pointer creation for WP Admin
