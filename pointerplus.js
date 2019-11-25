@@ -50,7 +50,7 @@ jQuery(function ($) {
         pointerWidth: parseInt(pointer.width),
         pointerClass: 'wp-pointer pointerplus' + pointer.class,
         buttons: function (event, t) {
-		  var button;
+          var button;
           if (pointer.jsnext) {
             var jsnext = new Function('t', '$', pointer.jsnext);
             return jsnext(t, jQuery);

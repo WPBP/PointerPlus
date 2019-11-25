@@ -22,13 +22,13 @@ class PointerPlus {
 
   /**
    * Construct the class parameter
-   * 
+   *
    * @param array $args Parameters of class.
    * @return void
    */
   function __construct( $args = array() ) {
     if ( isset( $args[ 'prefix' ] ) ) {
-	$this->prefix = $args[ 'prefix' ];
+        $this->prefix = $args[ 'prefix' ];
     }
     add_action( 'current_screen', array( $this, 'maybe_add_pointers' ) );
   }
@@ -58,51 +58,53 @@ class PointerPlus {
 		), $this->prefix );
 
     foreach ( $pointers as $key => $pointer ) {
-	$pointers[ $key ] = wp_parse_args( $pointer, $defaults );
-	$search_pt = false;
-	// Clean from null ecc
-	$pointers[ $key ][ 'post_type' ] = array_filter( $pointers[ $key ][ 'post_type' ] );
-	if ( !empty( $pointers[ $key ][ 'post_type' ] ) ) {
-	  if ( !empty( $current_post_type ) ) {
-	    if ( is_array( $pointers[ $key ][ 'post_type' ] ) ) {
-		// Search the post_type
-		foreach ( $pointers[ $key ][ 'post_type' ] as $value ) {
-		  if ( $value === $current_post_type ) {
-		    $search_pt = true;
-		  }
-		}
-		if ( $search_pt === false ) {
-		  unset( $pointers[ $key ] );
-		}
-	    } else {
-		new WP_Error( 'broke', __( 'PointerPlus Error: post_type is not an array!' ) );
-	    }
-	    // If not in CPT view remove all the pointers with post_type
-	  } else {
-	    unset( $pointers[ $key ] );
-	  }
-	}
-	// Clean from null ecc
-	if ( isset( $pointers[ $key ][ 'pages' ] ) ) {
-	  if ( is_array( $pointers[ $key ][ 'pages' ] ) ) {
-	    $pointers[ $key ][ 'pages' ] = array_filter( $pointers[ $key ][ 'pages' ] );
-	  }
-	  if ( !empty( $pointers[ $key ][ 'pages' ] ) ) {
-	    if ( is_array( $pointers[ $key ][ 'pages' ] ) ) {
-		// Search the page
-		foreach ( $pointers[ $key ][ 'pages' ] as $value ) {
-		  if ( $pagenow === $value ) {
-		    $search_pt = true;
-		  }
-		}
-		if ( $search_pt === false ) {
-		  unset( $pointers[ $key ] );
-		}
-	    } else {
-		new WP_Error( 'broke', __( 'PointerPlus Error: pages is not an array!' ) );
-	    }
-	  }
-	}
+        $pointers[ $key ] = wp_parse_args( $pointer, $defaults );
+        $search_pt = false;
+        // Clean from null ecc
+        $pointers[ $key ][ 'post_type' ] = array_filter( $pointers[ $key ][ 'post_type' ] );
+        if ( !empty( $pointers[ $key ][ 'post_type' ] ) ) {
+            if ( !empty( $current_post_type ) ) {
+                if ( is_array( $pointers[ $key ][ 'post_type' ] ) ) {
+                    // Search the post_type
+                    foreach ( $pointers[ $key ][ 'post_type' ] as $value ) {
+                        if ( $value === $current_post_type ) {
+                            $search_pt = true;
+                        }
+                    }
+                    if ( $search_pt === false ) {
+                        unset( $pointers[ $key ] );
+                    }
+                } else {
+                    new WP_Error( 'broke', __( 'PointerPlus Error: post_type is not an array!' ) );
+                }
+                // If not in CPT view remove all the pointers with post_type
+            } else {
+                unset( $pointers[ $key ] );
+            }
+        }
+        // Clean from null ecc
+        if ( isset( $pointers[ $key ][ 'pages' ] ) ) {
+            if ( is_array( $pointers[ $key ][ 'pages' ] ) ) {
+                $pointers[ $key ][ 'pages' ] = array_filter( $pointers[ $key ][ 'pages' ] );
+            }
+
+            if ( !empty( $pointers[ $key ][ 'pages' ] ) ) {
+                if ( is_array( $pointers[ $key ][ 'pages' ] ) ) {
+                    // Search the page
+                    foreach ( $pointers[ $key ][ 'pages' ] as $value ) {
+                        if ( $pagenow === $value ) {
+                            $search_pt = true;
+                        }
+                    }
+
+                    if ( $search_pt === false ) {
+                        unset( $pointers[ $key ] );
+                    }
+                } else {
+                    new WP_Error( 'broke', __( 'PointerPlus Error: pages is not an array!' ) );
+                }
+            }
+        }
     }
 
     return $pointers;
@@ -110,7 +112,7 @@ class PointerPlus {
 
   /**
    * Check that pointers haven't been dismissed already. If there are pointers to show, enqueue assets.
-   * 
+   *
    * @since 1.0.0
    */
   function maybe_add_pointers() {
@@ -125,14 +127,14 @@ class PointerPlus {
 
     // If we have some pointers to show, save them and start enqueuing assets to display them
     if ( !empty( $diff ) ) {
-	$this->pointers = $diff;
-	add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_assets' ) );
+        $this->pointers = $diff;
+        add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_assets' ) );
 
-	foreach ( $diff as $pointer ) {
-	  if ( isset( $pointer[ 'phpcode' ] ) ) {
-	    add_action( 'admin_notices', $pointer[ 'phpcode' ] );
-	  }
-	}
+        foreach ( $diff as $pointer ) {
+        if ( isset( $pointer[ 'phpcode' ] ) ) {
+            add_action( 'admin_notices', $pointer[ 'phpcode' ] );
+        }
+        }
     }
     $this->pointers[ 'l10n' ] = array( 'next' => __( 'Next' ) );
   }
