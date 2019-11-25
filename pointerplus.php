@@ -131,9 +131,9 @@ class PointerPlus {
         add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_assets' ) );
 
         foreach ( $diff as $pointer ) {
-        if ( isset( $pointer[ 'phpcode' ] ) ) {
-            add_action( 'admin_notices', $pointer[ 'phpcode' ] );
-        }
+            if ( isset( $pointer[ 'phpcode' ] ) ) {
+                add_action( 'admin_notices', $pointer[ 'phpcode' ] );
+            }
         }
     }
     $this->pointers[ 'l10n' ] = array( 'next' => __( 'Next' ) );
@@ -167,16 +167,17 @@ class PointerPlus {
    */
   function _reset_pointer( $id = 'me' ) {
     if ( $id === 'me' ) {
-	$id = get_current_user_id();
+        $id = get_current_user_id();
     }
+
     $pointers = explode( ',', get_user_meta( $id, 'dismissed_wp_pointers', true ) );
     foreach ( $pointers as $key => $pointer ) {
-	if ( strpos( $pointer, $this->prefix ) === 0 ) {
-	  unset( $pointers[ $key ] );
-	}
+        if ( strpos( $pointer, $this->prefix ) === 0 ) {
+        unset( $pointers[ $key ] );
+        }
     }
-    $meta = implode( ',', $pointers );
 
+    $meta = implode( ',', $pointers );
     update_user_meta( get_current_user_id(), 'dismissed_wp_pointers', $meta );
   }
 
