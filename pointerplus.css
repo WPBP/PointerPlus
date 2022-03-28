@@ -43,3 +43,11 @@
     width: 32px;
     height: 32px;
 }
+
+.pp-pointer-content .wp-pointer-buttons {
+  height:28px;
+}
+
+.pp-pointer-content .wp-pointer-buttons .close {
+  top:10px;
+}
