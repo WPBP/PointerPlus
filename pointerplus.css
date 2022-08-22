@@ -49,5 +49,11 @@
 }
 
 .pp-pointer-content .wp-pointer-buttons .close {
+  position: absolute;
+  right: 10px;
   top:10px;
+}
+
+.pp-pointer-content .wp-pointer-buttons .close:before {
+  color: #FFFFFF
 }
