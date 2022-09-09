@@ -136,7 +136,10 @@ class PointerPlus {
             }
         }
     }
-    $this->pointers[ 'l10n' ] = array( 'next' => __( 'Next' ) );
+    $this->pointers[ 'l10n' ] = array( 
+	    'next' => __( 'Next' ),
+	    'dismiss' => __( 'Dismiss' ),
+    );
   }
 
   /**
