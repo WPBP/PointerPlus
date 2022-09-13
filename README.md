@@ -1,5 +1,4 @@
 # PointerPlus
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e93be883a8e2422a83e615c4d709b31a)](https://www.codacy.com/app/mte90net/pointerplus?utm_source=github.com&utm_medium=referral&utm_content=WPBP/PointerPlus&utm_campaign=badger)
 [![License](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
 ![Downloads](https://img.shields.io/packagist/dt/wpbp/pointerplus.svg)    
 
@@ -8,8 +7,6 @@ Super pointer creation for WP Admin
 ## Install
 
 `composer require wpbp/pointerplus:dev-master`
-
-[composer-php52](https://github.com/composer-php52/composer-php52) supported.
 
 ## Features
 
