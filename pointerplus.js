@@ -52,7 +52,7 @@ jQuery(function ($) {
 						});
 						return button;
 					} else {
-						var close = (wpPointerL10n) ? wpPointerL10n.dismiss : 'Dismiss', button = jQuery('<a class="close" href="#">' + close + '</a>');
+						var close = (wpPointerL10n) ? wpPointerL10n.dismiss : 'Dismiss', button = jQuery('<a class="close" href="#">' + close + pointerplus.l10n.dismiss + '</a>');
 						return button.bind('click.pointer', function (e) {
 							e.preventDefault();
 							t.element.pointer('close');
