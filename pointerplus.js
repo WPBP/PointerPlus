@@ -18,10 +18,10 @@ function getParams(script_choosen) {
 
 jQuery(function ($) {
 	'use strict';
-	timer = setTimeout(function () {
+	setTimeout(function () {
 		var pointerplus = window[getParams(pp_scripts).var];
 		$.each(pointerplus, function (key, pointer) {
-			if ( pointer.selector === '' || pointer.selector === undefined ) {
+			if ( pointer.selector === '' || typeof pointer.selector === "undefined" ) {
 				return;
 			}
 			pointer.class += ' pp-' + key;
